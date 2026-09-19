@@ -24,6 +24,21 @@
         </el-form>
       </div>
 
+      <el-alert
+        v-if="store.error"
+        :title="store.error"
+        type="error"
+        show-icon
+        class="error-alert"
+        @close="store.error = null"
+      >
+        <el-button size="small" type="danger" plain :loading="store.loading" @click="store.retry()">重试</el-button>
+      </el-alert>
+
+      <div v-if="!store.result && !store.loading" class="panel empty-panel">
+        <el-empty description="暂无分析数据，请配置参数后点击「生成信号并分析」" />
+      </div>
+
       <div v-if="store.result" class="results-grid">
         <SpectrumPlot />
         <ConstellationPlot />
@@ -56,4 +71,8 @@ body{font-family:system-ui,sans-serif;background:#0f1923;color:#e0e0e0}
 .app-main{padding:16px 40px}
 .control-card{background:#1a2332;border-radius:8px;padding:16px 20px;margin-bottom:16px;border:1px solid #2a3a4a}
 .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.error-alert{margin-bottom:16px}
+.error-alert .el-button{margin-top:8px}
+.panel{background:#1a2332;border-radius:8px;padding:16px;border:1px solid #2a3a4a}
+.empty-panel{margin-bottom:16px}
 </style>

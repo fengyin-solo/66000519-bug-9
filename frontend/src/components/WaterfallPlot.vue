@@ -13,9 +13,15 @@ const cvs = ref<HTMLCanvasElement>()
 
 function draw() {
   const c = cvs.value!; const ctx = c.getContext('2d')!; const W = c.width, H = c.height
-  const rows = store.result?.waterfall || []
-  if (!rows.length) return
+  // 先整幅清屏，避免上一组数据残留或叠加
   ctx.fillStyle = '#0d1520'; ctx.fillRect(0, 0, W, H)
+  const rows = store.result?.waterfall || []
+  if (!rows.length) {
+    ctx.fillStyle = '#5a6a7a'; ctx.font = '13px system-ui'; ctx.textAlign = 'center'
+    ctx.fillText('暂无瀑布图数据', W / 2, H / 2)
+    ctx.textAlign = 'left'
+    return
+  }
   const rowH = H / rows.length
   for (let r = 0; r < rows.length; r++) {
     const vals = rows[r].values, n = vals.length
